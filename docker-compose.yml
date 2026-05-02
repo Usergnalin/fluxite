@@ -3,12 +3,14 @@ services:
     image: nginx:alpine
     container_name: nginx
     restart: always
+    env_file:
+      - .env
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/templates:/etc/nginx/templates:ro
     depends_on:
       - app
       - frontend
@@ -17,7 +19,7 @@ services:
     build:
       context: ./crafted-console-frontend
       args:
-        - VITE_API_URL=https://api.craftedconsole.app
+          - VITE_API_BASE=https://${VITE_API_BASE}
     container_name: frontend
     restart: always
 
@@ -26,7 +28,8 @@ services:
     container_name: express-app
     restart: always
     env_file:
-      - ./crafted-console-api/.env
+      - .env
+      - crafted-console-api/.env
     depends_on:
       db:
         condition: service_healthy
@@ -37,27 +40,31 @@ services:
     image: mysql:8.0
     container_name: mysql-db
     restart: always
-    environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    env_file:
+      - crafted-console-api/.env
+    ports:
+      - "127.0.0.1:3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 5s
-      retries: 10
+      interval: 3s  
+      timeout: 3s
+      retries: 20
+      start_period: 10s
 
   redis-server:
     image: redis:alpine
     container_name: redis-server
     restart: always
+    ports:
+      - "127.0.0.1:6379:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
+      interval: 3s
       timeout: 3s
-      retries: 5
+      retries: 10
+      start_period: 5s
 
 volumes:
   mysql_data:
