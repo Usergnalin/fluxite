@@ -1,18 +1,18 @@
 server {
     listen 80;
-    server_name ${VITE_PANEL_BASE} www.${VITE_PANEL_BASE};
+    server_name ${PANEL_BASE} www.${PANEL_BASE};
     return 301 https://$host$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name ${VITE_PANEL_BASE} www.${VITE_PANEL_BASE};
+    server_name ${PANEL_BASE} www.${PANEL_BASE};
 
-    ssl_certificate /etc/letsencrypt/live/${VITE_DOMAIN}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/${VITE_DOMAIN}/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
 
     location / {
-        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://${VITE_API_BASE} https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com; frame-ancestors 'none'; upgrade-insecure-requests;" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://${API_BASE} https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://accounts.google.com; frame-ancestors 'none'; upgrade-insecure-requests;" always;
         proxy_pass http://frontend:80;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

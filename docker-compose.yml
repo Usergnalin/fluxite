@@ -19,7 +19,7 @@ services:
     build:
       context: ./crafted-console-frontend
       args:
-          - VITE_API_BASE=https://${VITE_API_BASE}
+          - VITE_API_BASE=https://${API_BASE}
     container_name: frontend
     restart: always
 
@@ -45,7 +45,7 @@ services:
     ports:
       - "127.0.0.1:3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - /var/lib/mysql:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 3s  
@@ -65,6 +65,3 @@ services:
       timeout: 3s
       retries: 10
       start_period: 5s
-
-volumes:
-  mysql_data:
