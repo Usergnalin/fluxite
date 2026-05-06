@@ -31,27 +31,25 @@ services:
       - .env
       - crafted-console-api/.env
     depends_on:
-      db:
-        condition: service_healthy
       redis-server:
         condition: service_healthy
 
-  db:
-    image: mysql:8.0
-    container_name: mysql-db
-    restart: always
-    env_file:
-      - crafted-console-api/.env
-    ports:
-      - "127.0.0.1:3306:3306"
-    volumes:
-      - /var/lib/mysql:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 3s  
-      timeout: 3s
-      retries: 20
-      start_period: 10s
+  # db:
+  #   image: mysql:8.0
+  #   container_name: mysql-db
+  #   restart: always
+  #   env_file:
+  #     - crafted-console-api/.env
+  #   ports:
+  #     - "127.0.0.1:3306:3306"
+  #   volumes:
+  #     - /var/lib/mysql:/var/lib/mysql
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 3s  
+  #     timeout: 3s
+  #     retries: 20
+  #     start_period: 10s
 
   redis-server:
     image: redis:alpine
