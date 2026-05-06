@@ -134,3 +134,6 @@ dist
 
 # visual studio code 
 .vscode/
+
+# ca certs
+*.crt
