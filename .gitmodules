@@ -1,6 +1,6 @@
-[submodule "crafted-console-frontend"]
-	path = crafted-console-frontend
-	url = https://github.com/Usergnalin/crafted-console-frontend
-[submodule "crafted-console-api"]
-	path = crafted-console-api
-	url = https://github.com/Usergnalin/crafted-console-api
+[submodule "fluxite-frontend"]
+	path = fluxite-frontend
+	url = https://github.com/Usergnalin/fluxite-frontend
+[submodule "fluxite-api"]
+	path = fluxite-api
+	url = https://github.com/Usergnalin/fluxite-api
